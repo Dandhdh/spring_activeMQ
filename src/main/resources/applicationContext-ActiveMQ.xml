@@ -52,14 +52,14 @@
 
 
     <!-- 配置消息队列监听者（Queue） -->
-    <!--<bean id="queueMessageListener" class="com.danyy.Filter.QueueMessageListener" />-->
+    <bean id="queueMessageListener" class="com.danyy.Filter.QueueMessageListener" />
 
-    <!--&lt;!&ndash; 显示注入消息监听容器（Queue），配置连接工厂，监听的目标是demoQueueDestination，监听器是上面定义的监听器 &ndash;&gt;-->
-    <!--<bean id="queueListenerContainer"-->
-          <!--class="org.springframework.jms.listener.DefaultMessageListenerContainer">-->
-        <!--<property name="connectionFactory" ref="connectionFactory" />-->
-        <!--<property name="destination" ref="demoQueueDestination" />-->
-        <!--<property name="messageListener" ref="queueMessageListener" />-->
-    <!--</bean>-->
+    <!-- 显示注入消息监听容器（Queue），配置连接工厂，监听的目标是demoQueueDestination，监听器是上面定义的监听器 -->
+    <bean id="queueListenerContainer"
+    class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+    <property name="connectionFactory" ref="connectionFactory" />
+    <property name="destination" ref="demoQueueDestination" />
+    <property name="messageListener" ref="queueMessageListener" />
+    </bean>
 
 </beans>
