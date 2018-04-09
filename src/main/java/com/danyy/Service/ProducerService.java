@@ -16,6 +16,9 @@ import javax.jms.Session;
 @Service
 public class ProducerService {
 
+    @Resource(name = "jmsTopicTemplate")
+    private  JmsTemplate jmsTopicTemplate;
+
     @Resource(name="jmsTemplate")
     private JmsTemplate jmsTemplate;
 
@@ -38,5 +41,18 @@ public class ProducerService {
                 return session.createTextMessage(msg);
             }
         });
+    }
+
+    public void sendTopicMessage(Destination destination, final String msg){
+        if(null == destination){
+            destination = jmsTopicTemplate.getDefaultDestination();
+        }
+        System.out.println(Thread.currentThread().getName()+" 向主题"+destination+"发送消息---------------------->"+msg);
+        jmsTopicTemplate.send(new MessageCreator() {
+            public Message createMessage(Session session) throws JMSException {
+                return session.createTextMessage(msg);
+            }
+        });
+        System.out.println("spring send text message...");
     }
 }

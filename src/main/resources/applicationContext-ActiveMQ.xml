@@ -33,6 +33,14 @@
         <property name="sessionCacheSize" value="100" />
     </bean>
 
+    <!-- 定义主题(topic) -->
+    <bean id="demoTopicDestination" class="org.apache.activemq.command.ActiveMQTopic">
+        <!-- 设置主题的名字 -->
+        <constructor-arg>
+            <value>danYY_Topic</value>
+        </constructor-arg>
+    </bean>
+
     <!-- 定义消息队列（Queue） -->
     <bean id="demoQueueDestination" class="org.apache.activemq.command.ActiveMQQueue">
         <!-- 设置消息队列的名字 -->
@@ -50,6 +58,21 @@
         <property name="pubSubDomain" value="false" />
     </bean>
 
+    <!-- topic(主题,发布/订阅),一对多 -->
+    <bean id="jmsTopicTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="defaultDestination" ref="demoTopicDestination"/>
+        <property name="pubSubDomain" value="true"/>
+        <!-- 设置接收超时时间 60秒
+        <property name="receiveTimeout" value="60000"/>
+        -->
+        <!--<property name="explicitQosEnabled" value="true"/>-->
+        <!-- 发送模式
+             DeliveryMode.NON_PERSISTENT=1:非持久 ;
+             DeliveryMode.PERSISTENT=2:持久
+        -->
+    </bean>
+
 
     <!-- 配置消息队列监听者（Queue） -->
     <bean id="queueMessageListener" class="com.danyy.Filter.QueueMessageListener" />
@@ -58,8 +81,24 @@
     <bean id="queueListenerContainer"
     class="org.springframework.jms.listener.DefaultMessageListenerContainer">
     <property name="connectionFactory" ref="connectionFactory" />
+    <!--根据需要，设置监听的destination为队列还是主题-->
     <property name="destination" ref="demoQueueDestination" />
     <property name="messageListener" ref="queueMessageListener" />
+    </bean>
+
+
+    <!-- 配置消息队列监听者（Queue） -->
+    <bean id="topicMessageListener" class="com.danyy.Filter.TopicMessageListener" />
+
+    <!-- 显示注入消息监听容器（Queue），配置连接工厂，监听的目标是demoQueueDestination，监听器是上面定义的监听器 &ndash;&gt;-->
+    <bean id="topicListenerContainer"
+          class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <!--根据需要，设置监听的destination为队列还是主题-->
+        <!--<property name="destination" ref="demoQueueDestination" />-->
+        <!--主题-->
+        <property name="destination" ref="demoTopicDestination" />
+        <property name="messageListener" ref="topicMessageListener" />
     </bean>
 
 </beans>
