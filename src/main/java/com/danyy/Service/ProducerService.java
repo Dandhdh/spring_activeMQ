@@ -10,9 +10,6 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
 
-/**
- * Created by Administrator on 2017/1/5.
- */
 @Service
 public class ProducerService {
 

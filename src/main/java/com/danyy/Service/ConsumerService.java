@@ -8,9 +8,6 @@ import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.TextMessage;
 
-/**
- * Created by Administrator on 2017/1/5.
- */
 @Service
 public class ConsumerService {
     @Resource(name="jmsTemplate")
